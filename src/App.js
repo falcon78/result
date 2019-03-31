@@ -174,6 +174,9 @@ class App extends Component {
                 ))}
             </Table.Body>
           </Table>
+          <div className="footer">
+              &nbsp;
+          </div>
         </Style>
       );
     } else {
@@ -194,8 +197,8 @@ const Style = styled.div`
   .cardContainer {
     justify-content: center;
   }
-  width: 100vw;
-  margin: 3em 1em;
+  width: 95vw;
+  margin: 3em 1em 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -203,13 +206,17 @@ const Style = styled.div`
   align-content: center;
 
   .table {
-    width: max-content;
+    width:300px; 
+  }
+  .footer{
+    height: 100px;
+    background: #fff;
   }
 `;
 
 const Sub = styled.div`
-  margin: 4em 1em;
-  width: 100vw;
+  margin: 4em ;
+  width: 90vw;
   height: 200px;
   display: flex;
   flex-direction: column;
