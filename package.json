@@ -2,7 +2,7 @@
   "name": "newresult",
   "version": "0.1.0",
   "private": true,
-  "homepage": "sujank.me/results",
+  "homepage": "https://falcon78.github.io/result/",
   "dependencies": {
     "firebase": "^5.9.2",
     "gh-pages": "^2.0.1",
