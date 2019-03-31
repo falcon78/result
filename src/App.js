@@ -3,14 +3,45 @@ import "./App.css";
 import db from "./Firebase/firebase";
 import { Table } from "semantic-ui-react";
 import styled from "styled-components";
-import { Card } from "semantic-ui-react";
+import { Card, Button } from "semantic-ui-react";
+import Input from "semantic-ui-react/dist/commonjs/elements/Input";
 
 class App extends Component {
   data = [];
-  state = { considering: 0, join: 0, NC: 0, NM: 0, NE: 0 };
+  state = {
+    considering: 0,
+    join: 0,
+    NC: 0,
+    NM: 0,
+    NE: 0,
+    auth: false,
+    input: ""
+  };
   componentDidMount() {
+    const key = localStorage.getItem('auth');
+    if (key === "true"){
+      this.setState({
+        auth: true
+      })
+    }
     this.fetch();
+
   }
+
+  handleInput = e => {
+    this.setState({ input: e.target.value });
+  };
+
+  handleSubmit = () => {
+    if (this.state.input === "kamera") {
+      this.setState({
+        input: "",
+        auth: true
+      });
+      localStorage.setItem("auth", "true");
+    }
+  };
+
   regexnc = /\d{2}NC.{3}/i;
   regexne = /\d{2}NE.{3}/i;
   regexnm = /\d{2}NM.{3}/i;
@@ -21,7 +52,7 @@ class App extends Component {
       .collection("users");
 
     await docRef
-      .orderBy("date","desc")
+      .orderBy("date", "desc")
       .get()
       .then(snapshot => {
         snapshot.docs.forEach(data => {
@@ -62,83 +93,91 @@ class App extends Component {
 
   render() {
     //this.fetch();
+    if (this.state.auth) {
+      return (
+        <Style>
+          <Card.Group>
+            <Card
+              fluid
+              color="red"
+              header={"入部したい！ : " + this.state.join}
+            />
+            <Card
+              fluid
+              color="orange"
+              header={"検討中 : " + this.state.considering}
+            />
+          </Card.Group>
+          <Card.Group className="cardContainer">
+            <Card
+              className="card"
+              color="orange"
+              header={"NC:" + this.state.NC}
+            />
+            <Card
+              className="card"
+              color="orange"
+              header={"NE:" + this.state.NE}
+            />
+            <Card
+              className="card"
+              color="orange"
+              header={"NM:" + this.state.NM}
+            />
+          </Card.Group>
+          <Table unstackable class={"table"} celled>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>学籍番号</Table.HeaderCell>
+                <Table.HeaderCell>ステータス</Table.HeaderCell>
+                <Table.HeaderCell>更新回数</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-    return (
-      <Style>
-        <Card.Group>
-          <Card
-            fluid
-            color="red"
-            header={"入部したい！ : " + this.state.join}
-          />
-          <Card
-            fluid
-            color="orange"
-            header={"検討中 : " + this.state.considering}
-          />
-        </Card.Group>
-        <Card.Group className="cardContainer">
-          <Card
-            className="card"
-            color="orange"
-            header={"NC:" + this.state.NC}
-          />
-          <Card
-            className="card"
-            color="orange"
-            header={"NE:" + this.state.NE}
-          />
-          <Card
-            className="card"
-            color="orange"
-            header={"NM:" + this.state.NM}
-          />
-        </Card.Group>
-
-        <Table unstackable class={"table"} celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>学籍番号</Table.HeaderCell>
-              <Table.HeaderCell>ステータス</Table.HeaderCell>
-              <Table.HeaderCell>更新回数</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
-            {this.data
-              .filter(a => a.status === "検討中")
-              .map((number, index) => (
-                <Table.Row id={index}>
-                  <Table.Cell>{number.number}</Table.Cell>
-                  <Table.Cell>{number.status}</Table.Cell>
-                  <Table.Cell>{number.updateCount}</Table.Cell>
-                </Table.Row>
-              ))}
-          </Table.Body>
-          <Table.Body>
-            {this.data
-              .filter(a => a.status === "入部したい！")
-              .map((number, index) => (
-                <Table.Row id={index}>
-                  <Table.Cell>{number.number}</Table.Cell>
-                  <Table.Cell>{number.status}</Table.Cell>
-                  <Table.Cell>{number.updateCount}</Table.Cell>
-                </Table.Row>
-              ))}
-          </Table.Body>
-        </Table>
-      </Style>
-    );
+            <Table.Body>
+              {this.data
+                .filter(a => a.status === "検討中")
+                .map((number, index) => (
+                  <Table.Row id={index}>
+                    <Table.Cell>{number.number}</Table.Cell>
+                    <Table.Cell>{number.status}</Table.Cell>
+                    <Table.Cell>{number.updateCount}</Table.Cell>
+                  </Table.Row>
+                ))}
+            </Table.Body>
+            <Table.Body>
+              {this.data
+                .filter(a => a.status === "入部したい！")
+                .map((number, index) => (
+                  <Table.Row id={index}>
+                    <Table.Cell>{number.number}</Table.Cell>
+                    <Table.Cell>{number.status}</Table.Cell>
+                    <Table.Cell>{number.updateCount}</Table.Cell>
+                  </Table.Row>
+                ))}
+            </Table.Body>
+          </Table>
+        </Style>
+      );
+    } else {
+      return (
+        <Sub>
+          <h1>PassKey</h1>
+          <Input onChange={this.handleInput} value={this.state.input} />
+          <Button onClick={this.handleSubmit}>Submit</Button>
+        </Sub>
+      );
+    }
   }
 }
 
 export default App;
 const Style = styled.div`
-  .cardContainer{
+  .cardContainer {
     justify-content: center;
   }
   width: 100vw;
-  margin-top: 3em;
+  margin: 3em 1em;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -148,4 +187,14 @@ const Style = styled.div`
   .table {
     width: max-content;
   }
+`;
+
+const Sub = styled.div`
+  margin: 4em 1em;
+  width: 100vw;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
 `;
