@@ -15,17 +15,30 @@ class App extends Component {
     NM: 0,
     NE: 0,
     auth: false,
-    input: ""
+    input: "",
+    error: ""
+  };
+
+  hash = pass => {
+    let hash = 0,
+      i,
+      chr;
+    if (pass === 0) return hash;
+    for (i = 0; i < pass.length; i++) {
+      chr = pass.charCodeAt(i);
+      hash = (hash << 5) - hash + chr;
+      hash |= 0;
+    }
+    return hash;
   };
   componentDidMount() {
-    const key = localStorage.getItem('auth');
-    if (key === "true"){
+    const key = localStorage.getItem("auth");
+    if (key === "true") {
       this.setState({
         auth: true
-      })
+      });
     }
     this.fetch();
-
   }
 
   handleInput = e => {
@@ -33,12 +46,17 @@ class App extends Component {
   };
 
   handleSubmit = () => {
-    if (this.state.input === "kamera") {
+    let passhash = this.hash(this.state.input);
+    if (passhash === -1138718691) {
       this.setState({
         input: "",
         auth: true
       });
       localStorage.setItem("auth", "true");
+    } else {
+      this.setState({
+        error: "パスワードが違います。　:("
+      });
     }
   };
 
@@ -74,7 +92,6 @@ class App extends Component {
           }
           this.data = this.data.concat(object);
 
-          console.log(object);
           if (object.status === "検討中") {
             this.setState({
               considering: this.state.considering + 1
@@ -151,7 +168,7 @@ class App extends Component {
                 .map((number, index) => (
                   <Table.Row id={index}>
                     <Table.Cell>{number.number}</Table.Cell>
-                    <Table.Cell>{number.status}</Table.Cell>
+                    {/*<Table.Cell>{number.status}</Table.Cell>*/}
                     <Table.Cell>{number.updateCount}</Table.Cell>
                   </Table.Row>
                 ))}
@@ -164,6 +181,7 @@ class App extends Component {
         <Sub>
           <h1>PassKey</h1>
           <Input onChange={this.handleInput} value={this.state.input} />
+          {this.state.error && <p> {this.state.error}</p>}
           <Button onClick={this.handleSubmit}>Submit</Button>
         </Sub>
       );
