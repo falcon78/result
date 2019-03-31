@@ -117,29 +117,29 @@ class App extends Component {
             <Card
               fluid
               color="red"
-              header={"入部したい！ : " + this.state.join}
+              header={"入部したい  [ " + this.state.join + " ]"}
             />
             <Card
               fluid
               color="orange"
-              header={"検討中 : " + this.state.considering}
+              header={"検討中 [ " + this.state.considering + " ]"}
             />
           </Card.Group>
           <Card.Group className="cardContainer">
             <Card
               className="card"
               color="orange"
-              header={"NC:" + this.state.NC}
+              header={"NC [ " + this.state.NC + " ]"}
             />
             <Card
               className="card"
               color="orange"
-              header={"NE:" + this.state.NE}
+              header={"NE [ " + this.state.NE + " ]"}
             />
             <Card
               className="card"
               color="orange"
-              header={"NM:" + this.state.NM}
+              header={"NM [ " + this.state.NM + " ]"}
             />
           </Card.Group>
           <Table unstackable class={"table"} celled>
@@ -174,9 +174,7 @@ class App extends Component {
                 ))}
             </Table.Body>
           </Table>
-          <div className="footer">
-              &nbsp;
-          </div>
+          <div className="footer">&nbsp;</div>
         </Style>
       );
     } else {
@@ -206,16 +204,16 @@ const Style = styled.div`
   align-content: center;
 
   .table {
-    width:300px; 
+    width: 300px;
   }
-  .footer{
+  .footer {
     height: 100px;
     background: #fff;
   }
 `;
 
 const Sub = styled.div`
-  margin: 4em ;
+  margin: 4em;
   width: 90vw;
   height: 200px;
   display: flex;
