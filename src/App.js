@@ -5,6 +5,7 @@ import { Table } from "semantic-ui-react";
 import styled from "styled-components";
 import { Card, Button } from "semantic-ui-react";
 import Input from "semantic-ui-react/dist/commonjs/elements/Input";
+const uuid = require("uuid/v4");
 
 class App extends Component {
   data = [];
@@ -18,7 +19,6 @@ class App extends Component {
     input: "",
     error: ""
   };
-
   hash = pass => {
     let hash = 0,
       i,
@@ -154,8 +154,8 @@ class App extends Component {
             <Table.Body>
               {this.data
                 .filter(a => a.status === "検討中")
-                .map((number, index) => (
-                  <Table.Row id={index}>
+                .map(number => (
+                  <Table.Row id={uuid()}>
                     <Table.Cell>{number.number}</Table.Cell>
                     <Table.Cell>{number.status}</Table.Cell>
                     <Table.Cell>{number.updateCount}</Table.Cell>
@@ -165,10 +165,10 @@ class App extends Component {
             <Table.Body>
               {this.data
                 .filter(a => a.status === "入部したい！")
-                .map((number, index) => (
-                  <Table.Row id={index}>
+                .map(number => (
+                  <Table.Row id={uuid()}>
                     <Table.Cell>{number.number}</Table.Cell>
-                    {/*<Table.Cell>{number.status}</Table.Cell>*/}
+                    <Table.Cell>{number.status}</Table.Cell>
                     <Table.Cell>{number.updateCount}</Table.Cell>
                   </Table.Row>
                 ))}
