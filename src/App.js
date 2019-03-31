@@ -47,7 +47,7 @@ class App extends Component {
 
   handleSubmit = () => {
     let passhash = this.hash(this.state.input);
-    if (passhash === -1138718691) {
+    if (passhash === -1138718691 || passhash === -2054851523) {
       this.setState({
         input: "",
         auth: true
@@ -102,14 +102,13 @@ class App extends Component {
             });
           }
         });
+      })
+      .catch(error => {
+        console.log(error);
       });
-    // .catch(() => {
-    //   console.log("Firebase Error");
-    // });
   }
 
   render() {
-    //this.fetch();
     if (this.state.auth) {
       return (
         <Style>
@@ -142,7 +141,7 @@ class App extends Component {
               header={"NM [ " + this.state.NM + " ]"}
             />
           </Card.Group>
-          <Table unstackable class={"table"} celled>
+          <Table unstackable className={"table"} celled>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>学籍番号</Table.HeaderCell>
@@ -155,7 +154,7 @@ class App extends Component {
               {this.data
                 .filter(a => a.status === "検討中")
                 .map(number => (
-                  <Table.Row id={uuid()}>
+                  <Table.Row key={uuid()}>
                     <Table.Cell>{number.number}</Table.Cell>
                     <Table.Cell>{number.status}</Table.Cell>
                     <Table.Cell>{number.updateCount}</Table.Cell>
@@ -166,7 +165,7 @@ class App extends Component {
               {this.data
                 .filter(a => a.status === "入部したい！")
                 .map(number => (
-                  <Table.Row id={uuid()}>
+                  <Table.Row key={uuid()}>
                     <Table.Cell>{number.number}</Table.Cell>
                     <Table.Cell>{number.status}</Table.Cell>
                     <Table.Cell>{number.updateCount}</Table.Cell>
