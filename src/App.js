@@ -213,11 +213,12 @@ const Style = styled.div`
 `;
 
 const Sub = styled.div`
-  margin: 4em;
-  width: 90vw;
+  margin: 4em 0;
+  width: 100vw;
   height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-content: center;
   justify-content: space-around;
 `;
